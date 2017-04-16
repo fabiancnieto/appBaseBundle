@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Actions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Actionid</th>
+                <th>Nameaction</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for action in actions %}
+            <tr>
+                <td><a href="{{ path('ums_sec_actions_show', { 'id': action.actionId }) }}">{{ action.actionId }}</a></td>
+                <td>{{ action.nameAction }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_actions_show', { 'id': action.actionId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_actions_edit', { 'id': action.actionId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_actions_new') }}">Create a new action</a>
+        </li>
+    </ul>
+{% endblock %}

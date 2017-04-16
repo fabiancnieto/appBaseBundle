@@ -1,8 +1,8 @@
 <?php
 
-namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
+namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * PageActions

@@ -15,9 +15,9 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new WebPrj\WebSecurityBundle\WebPrjWebSecurityBundle(),
             ///Custom Project Bundles
             new FOS\UserBundle\FOSUserBundle(),
+            new WebPrj\WebSecurityBundle\WebPrjWebSecurityBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

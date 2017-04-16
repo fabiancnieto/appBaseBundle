@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Globalparam</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Globalparamid</th>
+                <td>{{ globalParam.globalParamId }}</td>
+            </tr>
+            <tr>
+                <th>Strvalglobalparam</th>
+                <td>{{ globalParam.strValGlobalParam }}</td>
+            </tr>
+            <tr>
+                <th>Numvalglobalparam</th>
+                <td>{{ globalParam.numValGlobalParam }}</td>
+            </tr>
+            <tr>
+                <th>Descglobalparam</th>
+                <td>{{ globalParam.descGlobalParam }}</td>
+            </tr>
+            <tr>
+                <th>Moduleglobalparam</th>
+                <td>{{ globalParam.moduleGlobalParam }}</td>
+            </tr>
+            <tr>
+                <th>Stateglobalparam</th>
+                <td>{{ globalParam.stateGlobalParam }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_params_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ums_sec_params_edit', { 'id': globalParam.globalParamId }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

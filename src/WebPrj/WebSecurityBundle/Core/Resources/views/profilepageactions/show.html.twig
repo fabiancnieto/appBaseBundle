@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profilepageaction</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Profilepageactionsid</th>
+                <td>{{ profilePageAction.profilePageActionsId }}</td>
+            </tr>
+            <tr>
+                <th>Useridcreate</th>
+                <td>{{ profilePageAction.userIdCreate }}</td>
+            </tr>
+            <tr>
+                <th>Datecreated</th>
+                <td>{% if profilePageAction.dateCreated %}{{ profilePageAction.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_privileges_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ums_sec_privileges_edit', { 'id': profilePageAction.profilePageActionsId }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

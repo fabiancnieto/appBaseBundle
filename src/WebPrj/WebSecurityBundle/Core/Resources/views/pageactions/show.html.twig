@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pageaction</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Pageactionsid</th>
+                <td>{{ pageAction.pageActionsId }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_menu_actions_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ums_sec_menu_actions_edit', { 'id': pageAction.pageActionsId }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

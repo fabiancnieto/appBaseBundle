@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pages list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Pageid</th>
+                <th>Namepage</th>
+                <th>Strnamepage</th>
+                <th>Appid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for page in pages %}
+            <tr>
+                <td><a href="{{ path('ums_sec_menu_item_show', { 'id': page.pageId }) }}">{{ page.pageId }}</a></td>
+                <td>{{ page.namePage }}</td>
+                <td>{{ page.strNamePage }}</td>
+                <td>{{ page.appId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_menu_item_show', { 'id': page.pageId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_menu_item_edit', { 'id': page.pageId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_menu_item_new') }}">Create a new page</a>
+        </li>
+    </ul>
+{% endblock %}

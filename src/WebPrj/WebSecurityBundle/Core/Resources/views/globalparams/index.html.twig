@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Globalparams list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Globalparamid</th>
+                <th>Strvalglobalparam</th>
+                <th>Numvalglobalparam</th>
+                <th>Descglobalparam</th>
+                <th>Moduleglobalparam</th>
+                <th>Stateglobalparam</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for globalParam in globalParams %}
+            <tr>
+                <td><a href="{{ path('ums_sec_params_show', { 'id': globalParam.globalParamId }) }}">{{ globalParam.globalParamId }}</a></td>
+                <td>{{ globalParam.strValGlobalParam }}</td>
+                <td>{{ globalParam.numValGlobalParam }}</td>
+                <td>{{ globalParam.descGlobalParam }}</td>
+                <td>{{ globalParam.moduleGlobalParam }}</td>
+                <td>{{ globalParam.stateGlobalParam }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_params_show', { 'id': globalParam.globalParamId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_params_edit', { 'id': globalParam.globalParamId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_params_new') }}">Create a new globalParam</a>
+        </li>
+    </ul>
+{% endblock %}

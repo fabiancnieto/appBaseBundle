@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Loginrecords list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Loginrecordid</th>
+                <th>Loginrecorddate</th>
+                <th>Loginrecordip</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for loginRecord in loginRecords %}
+            <tr>
+                <td><a href="{{ path('ums_sec_track_login_show', { 'id': loginRecord.loginRecordId }) }}">{{ loginRecord.loginRecordId }}</a></td>
+                <td>{% if loginRecord.loginRecordDate %}{{ loginRecord.loginRecordDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ loginRecord.loginRecordIp }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_track_login_show', { 'id': loginRecord.loginRecordId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_track_login_edit', { 'id': loginRecord.loginRecordId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_track_login_new') }}">Create a new loginRecord</a>
+        </li>
+    </ul>
+{% endblock %}

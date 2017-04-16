@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userprofiles list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Userprofileid</th>
+                <th>Useridcreate</th>
+                <th>Datecreated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userProfile in userProfiles %}
+            <tr>
+                <td><a href="{{ path('ums_sec_privileges_show', { 'id': userProfile.userProfileId }) }}">{{ userProfile.userProfileId }}</a></td>
+                <td>{{ userProfile.userIdCreate }}</td>
+                <td>{% if userProfile.dateCreated %}{{ userProfile.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_privileges_show', { 'id': userProfile.userProfileId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_privileges_edit', { 'id': userProfile.userProfileId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_privileges_new') }}">Create a new userProfile</a>
+        </li>
+    </ul>
+{% endblock %}

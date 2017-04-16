@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Users list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Userid</th>
+                <th>Loginuser</th>
+                <th>Numdocuser</th>
+                <th>Typedocuser</th>
+                <th>Passuser</th>
+                <th>Emailuser</th>
+                <th>Flastnameuser</th>
+                <th>Slastnameuser</th>
+                <th>Nameuser</th>
+                <th>Midnameuser</th>
+                <th>Statususer</th>
+                <th>Useridcreate</th>
+                <th>Datecreated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path('ums_sec_users_show', { 'id': user.userId }) }}">{{ user.userId }}</a></td>
+                <td>{{ user.loginUser }}</td>
+                <td>{{ user.numDocUser }}</td>
+                <td>{{ user.typeDocUser }}</td>
+                <td>{{ user.passUser }}</td>
+                <td>{{ user.emailUser }}</td>
+                <td>{{ user.flastNameUser }}</td>
+                <td>{{ user.slastNameUser }}</td>
+                <td>{{ user.nameUser }}</td>
+                <td>{{ user.midNameUser }}</td>
+                <td>{{ user.statusUser }}</td>
+                <td>{{ user.userIdCreate }}</td>
+                <td>{% if user.dateCreated %}{{ user.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_users_show', { 'id': user.userId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_users_edit', { 'id': user.userId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_users_new') }}">Create a new user</a>
+        </li>
+    </ul>
+{% endblock %}

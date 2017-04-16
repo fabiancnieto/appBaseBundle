@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Loginrecord</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Loginrecordid</th>
+                <td>{{ loginRecord.loginRecordId }}</td>
+            </tr>
+            <tr>
+                <th>Loginrecorddate</th>
+                <td>{% if loginRecord.loginRecordDate %}{{ loginRecord.loginRecordDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Loginrecordip</th>
+                <td>{{ loginRecord.loginRecordIp }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_track_login_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ums_sec_track_login_edit', { 'id': loginRecord.loginRecordId }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

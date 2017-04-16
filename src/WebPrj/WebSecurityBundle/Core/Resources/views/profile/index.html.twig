@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profiles list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Profileid</th>
+                <th>Descprofile</th>
+                <th>Appid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td><a href="{{ path('ums_sec_roles_show', { 'id': profile.profileId }) }}">{{ profile.profileId }}</a></td>
+                <td>{{ profile.descProfile }}</td>
+                <td>{{ profile.appId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_roles_show', { 'id': profile.profileId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_roles_edit', { 'id': profile.profileId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_roles_new') }}">Create a new profile</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profilepageactions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Profilepageactionsid</th>
+                <th>Useridcreate</th>
+                <th>Datecreated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profilePageAction in profilePageActions %}
+            <tr>
+                <td><a href="{{ path('ums_sec_privileges_show', { 'id': profilePageAction.profilePageActionsId }) }}">{{ profilePageAction.profilePageActionsId }}</a></td>
+                <td>{{ profilePageAction.userIdCreate }}</td>
+                <td>{% if profilePageAction.dateCreated %}{{ profilePageAction.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ums_sec_privileges_show', { 'id': profilePageAction.profilePageActionsId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ums_sec_privileges_edit', { 'id': profilePageAction.profilePageActionsId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ums_sec_privileges_new') }}">Create a new profilePageAction</a>
+        </li>
+    </ul>
+{% endblock %}
