@@ -1,0 +1,8 @@
+web_prj_web_security:
+    resource: "@WebPrjWebSecurityBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

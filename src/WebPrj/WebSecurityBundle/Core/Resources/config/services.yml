@@ -1,0 +1,4 @@
+services:
+#    web_prj_web_security.example:
+#        class: WebPrj\WebSecurityBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
