@@ -3,129 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\LoginRecordInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\LoginRecord;
 
-/**
- * LoginRecord
- *
- * @ORM\Table(name="login_record", indexes={@ORM\Index(name="fk_loginrecord_user_idx", columns={"user_id"})})
- * @ORM\Entity
- */
-class LoginRecord
+class LoginRecordRepository extends EntityRepository implements LoginRecordInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="login_record_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $loginRecordId;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="login_record_date", type="datetime", nullable=false)
-     */
-    private $loginRecordDate = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="login_record_ip", type="string", length=250, nullable=true)
-     */
-    private $loginRecordIp;
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\User
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
-     * })
-     */
-    private $user;
-
-
-
-    /**
-     * Get loginRecordId
-     *
-     * @return integer
-     */
-    public function getLoginRecordId()
+    public function add(LoginRecord $register)
     {
-        return $this->loginRecordId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set loginRecordDate
-     *
-     * @param \DateTime $loginRecordDate
-     *
-     * @return LoginRecord
-     */
-    public function setLoginRecordDate($loginRecordDate)
+    public function edit(LoginRecord $register)
     {
-        $this->loginRecordDate = $loginRecordDate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get loginRecordDate
-     *
-     * @return \DateTime
-     */
-    public function getLoginRecordDate()
+    public function remove(LoginRecord $register)
     {
-        return $this->loginRecordDate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set loginRecordIp
-     *
-     * @param string $loginRecordIp
-     *
-     * @return LoginRecord
-     */
-    public function setLoginRecordIp($loginRecordIp)
+    public function getAll()
     {
-        $this->loginRecordIp = $loginRecordIp;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get loginRecordIp
-     *
-     * @return string
-     */
-    public function getLoginRecordIp()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->loginRecordIp;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\User $user
-     *
-     * @return LoginRecord
-     */
-    public function setUser(\WebPrj\WebSecurityBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

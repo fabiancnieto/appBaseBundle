@@ -3,101 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\PageActionsInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions;
 
-/**
- * PageActions
- *
- * @ORM\Table(name="page_actions", indexes={@ORM\Index(name="fk_pageactions_page_idx", columns={"page_id"}), @ORM\Index(name="fk_pageactions_action_idx", columns={"action_id"})})
- * @ORM\Entity
- */
-class PageActions
+class PageActionsRepository extends EntityRepository implements PageActionsInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="page_actions_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $pageActionsId;
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Action
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Action")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="action_id", referencedColumnName="action_id")
-     * })
-     */
-    private $action;
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Page
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Page")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
-     * })
-     */
-    private $page;
-
-
-
-    /**
-     * Get pageActionsId
-     *
-     * @return integer
-     */
-    public function getPageActionsId()
+    public function add(PageActions $register)
     {
-        return $this->pageActionsId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set action
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\Action $action
-     *
-     * @return PageActions
-     */
-    public function setAction(\WebPrj\WebSecurityBundle\Entity\Action $action = null)
+    public function edit(PageActions $register)
     {
-        $this->action = $action;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get action
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\Action
-     */
-    public function getAction()
+    public function remove(PageActions $register)
     {
-        return $this->action;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set page
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\Page $page
-     *
-     * @return PageActions
-     */
-    public function setPage(\WebPrj\WebSecurityBundle\Entity\Page $page = null)
+    public function getAll()
     {
-        $this->page = $page;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get page
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\Page
-     */
-    public function getPage()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->page;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

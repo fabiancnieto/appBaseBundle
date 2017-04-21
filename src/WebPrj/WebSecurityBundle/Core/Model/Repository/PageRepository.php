@@ -3,126 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\PageInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\Page;
 
-/**
- * Page
- *
- * @ORM\Table(name="page")
- * @ORM\Entity
- */
-class Page
+class PageRepository extends EntityRepository implements PageInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="page_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $pageId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name_page", type="string", length=150, nullable=false)
-     */
-    private $namePage;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="str_name_page", type="string", length=45, nullable=true)
-     */
-    private $strNamePage;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="app_id", type="integer", nullable=false)
-     */
-    private $appId = '1';
-
-
-
-    /**
-     * Get pageId
-     *
-     * @return integer
-     */
-    public function getPageId()
+    public function add(Page $register)
     {
-        return $this->pageId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set namePage
-     *
-     * @param string $namePage
-     *
-     * @return Page
-     */
-    public function setNamePage($namePage)
+    public function edit(Page $register)
     {
-        $this->namePage = $namePage;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get namePage
-     *
-     * @return string
-     */
-    public function getNamePage()
+    public function remove(Page $register)
     {
-        return $this->namePage;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set strNamePage
-     *
-     * @param string $strNamePage
-     *
-     * @return Page
-     */
-    public function setStrNamePage($strNamePage)
+    public function getAll()
     {
-        $this->strNamePage = $strNamePage;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get strNamePage
-     *
-     * @return string
-     */
-    public function getStrNamePage()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->strNamePage;
-    }
-
-    /**
-     * Set appId
-     *
-     * @param integer $appId
-     *
-     * @return Page
-     */
-    public function setAppId($appId)
-    {
-        $this->appId = $appId;
-
-        return $this;
-    }
-
-    /**
-     * Get appId
-     *
-     * @return integer
-     */
-    public function getAppId()
-    {
-        return $this->appId;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

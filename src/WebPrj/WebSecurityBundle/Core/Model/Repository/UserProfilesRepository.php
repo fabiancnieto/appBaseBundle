@@ -3,163 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\UserProfilesInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\UserProfiles;
 
-/**
- * UserProfiles
- *
- * @ORM\Table(name="user_profiles", indexes={@ORM\Index(name="fk_userprofiles_user_idx", columns={"user_id"}), @ORM\Index(name="fk_userprofiles_profile_idx", columns={"profile_id"})})
- * @ORM\Entity
- */
-class UserProfiles
+class UserProfilesRepository extends EntityRepository implements UserProfilesInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_profile_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $userProfileId;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id_create", type="integer", nullable=true)
-     */
-    private $userIdCreate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_created", type="datetime", nullable=true)
-     */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Profile
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Profile")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="profile_id")
-     * })
-     */
-    private $profile;
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\User
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
-     * })
-     */
-    private $user;
-
-
-
-    /**
-     * Get userProfileId
-     *
-     * @return integer
-     */
-    public function getUserProfileId()
+    public function add(UserProfiles $register)
     {
-        return $this->userProfileId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set userIdCreate
-     *
-     * @param integer $userIdCreate
-     *
-     * @return UserProfiles
-     */
-    public function setUserIdCreate($userIdCreate)
+    public function edit(UserProfiles $register)
     {
-        $this->userIdCreate = $userIdCreate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get userIdCreate
-     *
-     * @return integer
-     */
-    public function getUserIdCreate()
+    public function remove(UserProfiles $register)
     {
-        return $this->userIdCreate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set dateCreated
-     *
-     * @param \DateTime $dateCreated
-     *
-     * @return UserProfiles
-     */
-    public function setDateCreated($dateCreated)
+    public function getAll()
     {
-        $this->dateCreated = $dateCreated;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get dateCreated
-     *
-     * @return \DateTime
-     */
-    public function getDateCreated()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->dateCreated;
-    }
-
-    /**
-     * Set profile
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\Profile $profile
-     *
-     * @return UserProfiles
-     */
-    public function setProfile(\WebPrj\WebSecurityBundle\Entity\Profile $profile = null)
-    {
-        $this->profile = $profile;
-
-        return $this;
-    }
-
-    /**
-     * Get profile
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\Profile
-     */
-    public function getProfile()
-    {
-        return $this->profile;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\User $user
-     *
-     * @return UserProfiles
-     */
-    public function setUser(\WebPrj\WebSecurityBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

@@ -3,188 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\GlobalParamsInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\GlobalParams;
 
-/**
- * GlobalParams
- *
- * @ORM\Table(name="global_params")
- * @ORM\Entity
- */
-class GlobalParams
+class GlobalParamsRepository extends EntityRepository implements GlobalParamsInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="global_param_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $globalParamId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="str_val_global_param", type="string", length=45, nullable=true)
-     */
-    private $strValGlobalParam;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="num_val_global_param", type="integer", nullable=true)
-     */
-    private $numValGlobalParam;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="desc_global_param", type="string", length=150, nullable=true)
-     */
-    private $descGlobalParam;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="module_global_param", type="integer", nullable=false)
-     */
-    private $moduleGlobalParam;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="state_global_param", type="integer", nullable=false)
-     */
-    private $stateGlobalParam;
-
-
-
-    /**
-     * Get globalParamId
-     *
-     * @return integer
-     */
-    public function getGlobalParamId()
+    public function add(GlobalParams $register)
     {
-        return $this->globalParamId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set strValGlobalParam
-     *
-     * @param string $strValGlobalParam
-     *
-     * @return GlobalParams
-     */
-    public function setStrValGlobalParam($strValGlobalParam)
+    public function edit(GlobalParams $register)
     {
-        $this->strValGlobalParam = $strValGlobalParam;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get strValGlobalParam
-     *
-     * @return string
-     */
-    public function getStrValGlobalParam()
+    public function remove(GlobalParams $register)
     {
-        return $this->strValGlobalParam;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set numValGlobalParam
-     *
-     * @param integer $numValGlobalParam
-     *
-     * @return GlobalParams
-     */
-    public function setNumValGlobalParam($numValGlobalParam)
+    public function getAll()
     {
-        $this->numValGlobalParam = $numValGlobalParam;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get numValGlobalParam
-     *
-     * @return integer
-     */
-    public function getNumValGlobalParam()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->numValGlobalParam;
-    }
-
-    /**
-     * Set descGlobalParam
-     *
-     * @param string $descGlobalParam
-     *
-     * @return GlobalParams
-     */
-    public function setDescGlobalParam($descGlobalParam)
-    {
-        $this->descGlobalParam = $descGlobalParam;
-
-        return $this;
-    }
-
-    /**
-     * Get descGlobalParam
-     *
-     * @return string
-     */
-    public function getDescGlobalParam()
-    {
-        return $this->descGlobalParam;
-    }
-
-    /**
-     * Set moduleGlobalParam
-     *
-     * @param integer $moduleGlobalParam
-     *
-     * @return GlobalParams
-     */
-    public function setModuleGlobalParam($moduleGlobalParam)
-    {
-        $this->moduleGlobalParam = $moduleGlobalParam;
-
-        return $this;
-    }
-
-    /**
-     * Get moduleGlobalParam
-     *
-     * @return integer
-     */
-    public function getModuleGlobalParam()
-    {
-        return $this->moduleGlobalParam;
-    }
-
-    /**
-     * Set stateGlobalParam
-     *
-     * @param integer $stateGlobalParam
-     *
-     * @return GlobalParams
-     */
-    public function setStateGlobalParam($stateGlobalParam)
-    {
-        $this->stateGlobalParam = $stateGlobalParam;
-
-        return $this;
-    }
-
-    /**
-     * Get stateGlobalParam
-     *
-     * @return integer
-     */
-    public function getStateGlobalParam()
-    {
-        return $this->stateGlobalParam;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

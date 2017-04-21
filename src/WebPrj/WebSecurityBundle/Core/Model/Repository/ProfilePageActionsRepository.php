@@ -3,163 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\ProfilePageActionsInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\ProfilePageActions;
 
-/**
- * ProfilePageActions
- *
- * @ORM\Table(name="profile_page_actions", indexes={@ORM\Index(name="fk_profilepageactions_profile_idx", columns={"profile_id"}), @ORM\Index(name="fk_profilepageactions_pageactions_idx", columns={"page_actions_id"})})
- * @ORM\Entity
- */
-class ProfilePageActions
+class ProfilePageActionsRepository extends EntityRepository implements ProfilePageActionsInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="profile_page_actions_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $profilePageActionsId;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id_create", type="integer", nullable=true)
-     */
-    private $userIdCreate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_created", type="datetime", nullable=true)
-     */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\PageActions
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\PageActions")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_actions_id", referencedColumnName="page_actions_id")
-     * })
-     */
-    private $pageActions;
-
-    /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Profile
-     *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Profile")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="profile_id")
-     * })
-     */
-    private $profile;
-
-
-
-    /**
-     * Get profilePageActionsId
-     *
-     * @return integer
-     */
-    public function getProfilePageActionsId()
+    public function add(ProfilePageActions $register)
     {
-        return $this->profilePageActionsId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set userIdCreate
-     *
-     * @param integer $userIdCreate
-     *
-     * @return ProfilePageActions
-     */
-    public function setUserIdCreate($userIdCreate)
+    public function edit(ProfilePageActions $register)
     {
-        $this->userIdCreate = $userIdCreate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get userIdCreate
-     *
-     * @return integer
-     */
-    public function getUserIdCreate()
+    public function remove(ProfilePageActions $register)
     {
-        return $this->userIdCreate;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set dateCreated
-     *
-     * @param \DateTime $dateCreated
-     *
-     * @return ProfilePageActions
-     */
-    public function setDateCreated($dateCreated)
+    public function getAll()
     {
-        $this->dateCreated = $dateCreated;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get dateCreated
-     *
-     * @return \DateTime
-     */
-    public function getDateCreated()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->dateCreated;
-    }
-
-    /**
-     * Set pageActions
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\PageActions $pageActions
-     *
-     * @return ProfilePageActions
-     */
-    public function setPageActions(\WebPrj\WebSecurityBundle\Entity\PageActions $pageActions = null)
-    {
-        $this->pageActions = $pageActions;
-
-        return $this;
-    }
-
-    /**
-     * Get pageActions
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\PageActions
-     */
-    public function getPageActions()
-    {
-        return $this->pageActions;
-    }
-
-    /**
-     * Set profile
-     *
-     * @param \WebPrj\WebSecurityBundle\Entity\Profile $profile
-     *
-     * @return ProfilePageActions
-     */
-    public function setProfile(\WebPrj\WebSecurityBundle\Entity\Profile $profile = null)
-    {
-        $this->profile = $profile;
-
-        return $this;
-    }
-
-    /**
-     * Get profile
-     *
-     * @return \WebPrj\WebSecurityBundle\Entity\Profile
-     */
-    public function getProfile()
-    {
-        return $this->profile;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

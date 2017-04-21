@@ -3,95 +3,45 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\ProfileInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\Profile;
 
-/**
- * Profile
- *
- * @ORM\Table(name="profile")
- * @ORM\Entity
- */
-class Profile
+class ProfileRepository extends EntityRepository implements ProfileInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="profile_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $profileId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="desc_profile", type="string", length=150, nullable=false)
-     */
-    private $descProfile;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="app_id", type="integer", nullable=false)
-     */
-    private $appId = '1';
-
-
-
-    /**
-     * Get profileId
-     *
-     * @return integer
-     */
-    public function getProfileId()
+    public function add(Profile $register)
     {
-        return $this->profileId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set descProfile
-     *
-     * @param string $descProfile
-     *
-     * @return Profile
-     */
-    public function setDescProfile($descProfile)
+    public function edit(Profile $register)
     {
-        $this->descProfile = $descProfile;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get descProfile
-     *
-     * @return string
-     */
-    public function getDescProfile()
+    public function remove(Profile $register)
     {
-        return $this->descProfile;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set appId
-     *
-     * @param integer $appId
-     *
-     * @return Profile
-     */
-    public function setAppId($appId)
+    public function getAll()
     {
-        $this->appId = $appId;
-
-        return $this;
+        return parent::findAll();
     }
 
-    /**
-     * Get appId
-     *
-     * @return integer
-     */
-    public function getAppId()
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->appId;
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }
