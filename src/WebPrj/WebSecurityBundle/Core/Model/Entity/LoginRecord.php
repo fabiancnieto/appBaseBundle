@@ -3,12 +3,13 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * LoginRecord
  *
  * @ORM\Table(name="login_record", indexes={@ORM\Index(name="fk_loginrecord_user_idx", columns={"user_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\LoginRecordRepository")
  */
 class LoginRecord
 {
@@ -25,8 +26,9 @@ class LoginRecord
      * @var \DateTime
      *
      * @ORM\Column(name="login_record_date", type="datetime", nullable=false)
+     * @Assert\NotBlank()
      */
-    private $loginRecordDate = 'CURRENT_TIMESTAMP';
+    private $loginRecordDate;
 
     /**
      * @var string
@@ -36,9 +38,9 @@ class LoginRecord
     private $loginRecordIp;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\User
+     * @var WebPrj\WebSecurityBundle\Core\Model\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\User", inversedBy="loginRecords", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
      * })
@@ -46,6 +48,11 @@ class LoginRecord
     private $user;
 
 
+
+    public function __construct()
+    {
+        $this->loginRecordDate = new \DateTime();
+    }
 
     /**
      * Get loginRecordId
@@ -108,11 +115,11 @@ class LoginRecord
     /**
      * Set user
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\User $user
+     * @param WebPrj\WebSecurityBundle\Core\Model\Entity\User $user
      *
      * @return LoginRecord
      */
-    public function setUser(\WebPrj\WebSecurityBundle\Entity\User $user = null)
+    public function setUser(\WebPrj\WebSecurityBundle\Core\Model\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -122,10 +129,20 @@ class LoginRecord
     /**
      * Get user
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\User
+     * @return WebPrj\WebSecurityBundle\Core\Model\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getLoginRecordId();
     }
 }

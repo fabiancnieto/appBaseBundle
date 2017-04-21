@@ -3,12 +3,14 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="loginuser_UNIQUE", columns={"login_user"}), @ORM\UniqueConstraint(name="emailuser_UNIQUE", columns={"email_user"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\UserRepository")
  */
 class User
 {
@@ -25,6 +27,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="login_user", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $loginUser;
 
@@ -46,6 +49,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="pass_user", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $passUser;
 
@@ -53,6 +57,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="email_user", type="string", length=250, nullable=false)
+     * @Assert\NotBlank()
      */
     private $emailUser;
 
@@ -60,6 +65,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="flast_name_user", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $flastNameUser;
 
@@ -74,6 +80,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="name_user", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $nameUser;
 
@@ -88,6 +95,7 @@ class User
      * @var integer
      *
      * @ORM\Column(name="status_user", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $statusUser = '1';
 
@@ -103,9 +111,18 @@ class User
      *
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
+    private $dateCreated;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\UserProfiles", mappedBy="user", cascade={"persist"})
+     */
+    private $userProfiles;
 
+    public function __construct()
+    {
+        $this->dateCreated = new \DateTime();
+        $this->userProfiles = new ArrayCollection();
+    }
 
     /**
      * Get userId
@@ -403,5 +420,15 @@ class User
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getUserId();
     }
 }

@@ -3,12 +3,13 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * GlobalParams
  *
  * @ORM\Table(name="global_params")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\GlobalParamsRepository")
  */
 class GlobalParams
 {
@@ -46,6 +47,7 @@ class GlobalParams
      * @var integer
      *
      * @ORM\Column(name="module_global_param", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $moduleGlobalParam;
 
@@ -53,6 +55,7 @@ class GlobalParams
      * @var integer
      *
      * @ORM\Column(name="state_global_param", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $stateGlobalParam;
 
@@ -186,5 +189,15 @@ class GlobalParams
     public function getStateGlobalParam()
     {
         return $this->stateGlobalParam;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getGlobalParamId();
     }
 }

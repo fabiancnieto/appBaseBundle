@@ -3,64 +3,50 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use WebPrj\WebSecurityBundle\Core\Model\ActionInterface;
+use WebPrj\WebSecurityBundle\Core\Model\Entity\Action;
 
-/**
- * Action
- *
- * @ORM\Table(name="action")
- * @ORM\Entity
- */
-class Action
+class ActionRepository extends EntityRepository implements ActionInterface
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="action_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $actionId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name_action", type="string", length=150, nullable=false)
-     */
-    private $nameAction;
-
-
-
-    /**
-     * Get actionId
-     *
-     * @return integer
-     */
-    public function getActionId()
+    @Override
+    public function add(Action $register)
     {
-        return $this->actionId;
+        if($register->getId() == null) {
+            $this->getEntityManager()->persist($register);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Set nameAction
-     *
-     * @param string $nameAction
-     *
-     * @return Action
-     */
-    public function setNameAction($nameAction)
+    @Override
+    public function edit(Action $register)
     {
-        $this->nameAction = $nameAction;
+        if($register->getId() == null) {
+            $this->getEntityManager()->merge($register);
+        }
 
-        return $this;
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * Get nameAction
-     *
-     * @return string
-     */
-    public function getNameAction()
+    @Override
+    public function remove(Action $register)
     {
-        return $this->nameAction;
+        if($register->getId() == null) {
+            $this->getEntityManager()->remove($register);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    @Override
+    public function getAll()
+    {
+        return parent::findAll();
+    }
+
+    @Override
+    public function getBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

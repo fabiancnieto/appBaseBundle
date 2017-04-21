@@ -3,12 +3,13 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ProfilePageActions
  *
  * @ORM\Table(name="profile_page_actions", indexes={@ORM\Index(name="fk_profilepageactions_profile_idx", columns={"profile_id"}), @ORM\Index(name="fk_profilepageactions_pageactions_idx", columns={"page_actions_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\ProfilePageActionsRepository")
  */
 class ProfilePageActions
 {
@@ -33,12 +34,12 @@ class ProfilePageActions
      *
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
+    private $dateCreated;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\PageActions
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\PageActions")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions", inversedBy="profilePageActions", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_actions_id", referencedColumnName="page_actions_id")
      * })
@@ -46,9 +47,9 @@ class ProfilePageActions
     private $pageActions;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Profile
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Profile")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\Profile", inversedBy="profilePageActions", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="profile_id", referencedColumnName="profile_id")
      * })
@@ -56,6 +57,10 @@ class ProfilePageActions
     private $profile;
 
 
+    public function __construct()
+    {
+        $this->dateCreated = new \DateTime();
+    }
 
     /**
      * Get profilePageActionsId
@@ -118,11 +123,11 @@ class ProfilePageActions
     /**
      * Set pageActions
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\PageActions $pageActions
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions $pageActions
      *
      * @return ProfilePageActions
      */
-    public function setPageActions(\WebPrj\WebSecurityBundle\Entity\PageActions $pageActions = null)
+    public function setPageActions(\WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions $pageActions = null)
     {
         $this->pageActions = $pageActions;
 
@@ -132,7 +137,7 @@ class ProfilePageActions
     /**
      * Get pageActions
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\PageActions
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions
      */
     public function getPageActions()
     {
@@ -142,11 +147,11 @@ class ProfilePageActions
     /**
      * Set profile
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\Profile $profile
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile $profile
      *
      * @return ProfilePageActions
      */
-    public function setProfile(\WebPrj\WebSecurityBundle\Entity\Profile $profile = null)
+    public function setProfile(\WebPrj\WebSecurityBundle\Core\Model\Entity\Profile $profile = null)
     {
         $this->profile = $profile;
 
@@ -156,10 +161,20 @@ class ProfilePageActions
     /**
      * Get profile
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\Profile
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile
      */
     public function getProfile()
     {
         return $this->profile;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getProfilePageActionsId();
     }
 }

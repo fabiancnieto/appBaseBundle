@@ -3,12 +3,14 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Page
  *
  * @ORM\Table(name="page")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\PageRepository")
  */
 class Page
 {
@@ -25,6 +27,7 @@ class Page
      * @var string
      *
      * @ORM\Column(name="name_page", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $namePage;
 
@@ -39,10 +42,21 @@ class Page
      * @var integer
      *
      * @ORM\Column(name="app_id", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $appId = '1';
 
+    /**
+     * @ORM\OneToMany(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\PageActions", mappedBy="page", cascade={"persist"})
+     */
+    private $pageActions;
 
+
+    public function __construct()
+    {
+        $this->loginRecordDate = new \DateTime();
+        $this->pageActions = new ArrayCollection();
+    }
 
     /**
      * Get pageId
@@ -124,5 +138,15 @@ class Page
     public function getAppId()
     {
         return $this->appId;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getPageId();
     }
 }

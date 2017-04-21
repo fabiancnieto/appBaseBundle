@@ -3,12 +3,14 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Profile
  *
  * @ORM\Table(name="profile")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\ProfileRepository")
  */
 class Profile
 {
@@ -25,6 +27,7 @@ class Profile
      * @var string
      *
      * @ORM\Column(name="desc_profile", type="string", length=150, nullable=false)
+     * @Assert\NotBlank()
      */
     private $descProfile;
 
@@ -32,10 +35,25 @@ class Profile
      * @var integer
      *
      * @ORM\Column(name="app_id", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $appId = '1';
 
+    /**
+     * @ORM\OneToMany(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\ProfilePageActions", mappedBy="profile", cascade={"persist"})
+     */
+    private $profilePageActions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\UserProfiles", mappedBy="profile", cascade={"persist"})
+     */
+    private $userProfiles;
+
+    public function __construct()
+    {
+        $this->profilePageActions = new ArrayCollection();
+        $this->userProfiles = new ArrayCollection();
+    }
 
     /**
      * Get profileId
@@ -93,5 +111,15 @@ class Profile
     public function getAppId()
     {
         return $this->appId;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getProfileId();
     }
 }

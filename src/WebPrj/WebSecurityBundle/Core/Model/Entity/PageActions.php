@@ -3,12 +3,14 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * PageActions
  *
  * @ORM\Table(name="page_actions", indexes={@ORM\Index(name="fk_pageactions_page_idx", columns={"page_id"}), @ORM\Index(name="fk_pageactions_action_idx", columns={"action_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\PageActionsRepository")
  */
 class PageActions
 {
@@ -22,9 +24,9 @@ class PageActions
     private $pageActionsId;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Action
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\Action
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Action")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\Action", inversedBy="pageActions", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="action_id", referencedColumnName="action_id")
      * })
@@ -32,16 +34,25 @@ class PageActions
     private $action;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Page
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\Page
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Page")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\Page", inversedBy="pageActions", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
      * })
      */
     private $page;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\ProfilePageActions", mappedBy="pageActions", cascade={"persist"})
+     */
+    private $profilePageActions;
 
+
+    public function __construct()
+    {
+        $this->profilePageActions = new ArrayCollection();
+    }
 
     /**
      * Get pageActionsId
@@ -56,11 +67,11 @@ class PageActions
     /**
      * Set action
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\Action $action
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\Action $action
      *
      * @return PageActions
      */
-    public function setAction(\WebPrj\WebSecurityBundle\Entity\Action $action = null)
+    public function setAction(\WebPrj\WebSecurityBundle\Core\Model\Entity\Action $action = null)
     {
         $this->action = $action;
 
@@ -70,7 +81,7 @@ class PageActions
     /**
      * Get action
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\Action
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\Action
      */
     public function getAction()
     {
@@ -80,11 +91,11 @@ class PageActions
     /**
      * Set page
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\Page $page
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\Page $page
      *
      * @return PageActions
      */
-    public function setPage(\WebPrj\WebSecurityBundle\Entity\Page $page = null)
+    public function setPage(\WebPrj\WebSecurityBundle\Core\Model\Entity\Page $page = null)
     {
         $this->page = $page;
 
@@ -94,10 +105,20 @@ class PageActions
     /**
      * Get page
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\Page
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\Page
      */
     public function getPage()
     {
         return $this->page;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getPageActionsId();
     }
 }

@@ -3,12 +3,13 @@
 namespace WebPrj\WebSecurityBundle\Core\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * UserProfiles
  *
  * @ORM\Table(name="user_profiles", indexes={@ORM\Index(name="fk_userprofiles_user_idx", columns={"user_id"}), @ORM\Index(name="fk_userprofiles_profile_idx", columns={"profile_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WebPrj\WebSecurityBundle\Core\Model\Repository\UserProfilesRepository")
  */
 class UserProfiles
 {
@@ -33,12 +34,12 @@ class UserProfiles
      *
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
+    private $dateCreated;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\Profile
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\Profile")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\Profile", inversedBy="userProfiles", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="profile_id", referencedColumnName="profile_id")
      * })
@@ -46,9 +47,9 @@ class UserProfiles
     private $profile;
 
     /**
-     * @var \WebPrj\WebSecurityBundle\Entity\User
+     * @var \WebPrj\WebSecurityBundle\Core\Model\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="WebPrj\WebSecurityBundle\Core\Model\Entity\User", inversedBy="userProfiles", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
      * })
@@ -56,6 +57,10 @@ class UserProfiles
     private $user;
 
 
+    public function __construct()
+    {
+        $this->dateCreated = new \DateTime();
+    }
 
     /**
      * Get userProfileId
@@ -118,11 +123,11 @@ class UserProfiles
     /**
      * Set profile
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\Profile $profile
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile $profile
      *
      * @return UserProfiles
      */
-    public function setProfile(\WebPrj\WebSecurityBundle\Entity\Profile $profile = null)
+    public function setProfile(\WebPrj\WebSecurityBundle\Core\Model\Entity\Profile $profile = null)
     {
         $this->profile = $profile;
 
@@ -132,7 +137,7 @@ class UserProfiles
     /**
      * Get profile
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\Profile
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\Profile
      */
     public function getProfile()
     {
@@ -142,11 +147,11 @@ class UserProfiles
     /**
      * Set user
      *
-     * @param \WebPrj\WebSecurityBundle\Entity\User $user
+     * @param \WebPrj\WebSecurityBundle\Core\Model\Entity\User $user
      *
      * @return UserProfiles
      */
-    public function setUser(\WebPrj\WebSecurityBundle\Entity\User $user = null)
+    public function setUser(\WebPrj\WebSecurityBundle\Core\Model\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -156,10 +161,20 @@ class UserProfiles
     /**
      * Get user
      *
-     * @return \WebPrj\WebSecurityBundle\Entity\User
+     * @return \WebPrj\WebSecurityBundle\Core\Model\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get Id Standart funtion that allow to get The identifier for this Entity
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->getUserProfileId();
     }
 }
